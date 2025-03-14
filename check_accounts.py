@@ -12,7 +12,7 @@ dept1 = sys.argv[2]      # 第一个部门
 dept2 = sys.argv[3]      # 第二个部门
 
 # 读取Excel文件
-df = pd.read_excel(file_name, sheet_name="Sheet1", skiprows=1)
+df = pd.read_excel(file_name, sheet_name="Sheet1")
 
 # 提取部门1（dept1）的数据
 dept1_receivable = df.loc[(df["对账部门"] == dept1) & (df["应收应付"] == "应收款"), dept2].values[0]

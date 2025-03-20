@@ -40,18 +40,18 @@ for i in range(len(all_departments_with_order)):
         department_pairs.append((all_departments_with_order[i], all_departments_with_order[j]))
 
 total_groups = len(department_pairs) * 2
-print(f"形成 {len(department_pairs)} 个部门对（共{total_groups}组数据），开始进行对账检查...")
+print(f"形成 {len(department_pairs)} 个部门对（共{total_groups}组数据），开始进行对账检查...\n")
 
 group_idx = 1
 dept_pairs_with_large_diff = {}  # 存储有大差异的部门对及其所有数据
 
 for idx, dept_pair in enumerate(department_pairs, 1):
     dept1, dept2 = dept_pair
-    pair_key = f"[{idx}/{len(department_pairs)}] 检查 {dept1} 和 {dept2} 之间的对账情况："
+    pair_key = f"[部门对-编号：{idx}/{len(department_pairs)}] 检查 {dept1} 和 {dept2} 之间的对账情况："
     group_data = []  # 存储该部门对的所有检查结果
     has_large_diff = False  # 标记该部门对是否有大差异
     
-    print(f"\n[{idx}/{len(department_pairs)}] 检查 {dept1} 和 {dept2} 之间的对账情况:")
+    print(f"\n[部门对-编号：{idx}/{len(department_pairs)}] 检查 {dept1} 和 {dept2} 之间的对账情况:")
     print("-" * 60)
     
     try:
@@ -76,12 +76,12 @@ for idx, dept_pair in enumerate(department_pairs, 1):
         diff = abs(value1 - value2)
         
         # 准备输出
-        check_output = f"[{group_idx}/{total_groups}] 检查 {dept1} 和 {dept2} 之间的对账情况:"
+        check_output = f"[部门对-{idx}/{len(department_pairs)}-数据组编号：{group_idx}/{total_groups}] 检查 {dept1} 和 {dept2} 之间的对账情况:"
         if diff >= 10000:
             check_output += f"（两者相差超过10000，为{diff:.4f}）"
             has_large_diff = True
         
-        check_output += f" {dept1} 声称应收 {dept2}: {dept1_receivable} 而{dept2} 声称应付 {dept1}: {dept2_payable}"
+        check_output += f"\n  {dept1} 声称应收 {dept2}: {dept1_receivable} \n而{dept2} 声称应付 {dept1}: {dept2_payable}"
         
         # 存储输出
         group_data.append(check_output)
@@ -110,12 +110,12 @@ for idx, dept_pair in enumerate(department_pairs, 1):
         diff = abs(value1 - value2)
         
         # 准备输出
-        check_output = f"[{group_idx}/{total_groups}] 检查 {dept1} 和 {dept2} 之间的对账情况:"
+        check_output = f"[部门对-{idx}/{len(department_pairs)}-数据组编号：{group_idx}/{total_groups}] 检查 {dept1} 和 {dept2} 之间的对账情况:"
         if diff >= 10000:
             check_output += f"（两者相差超过10000，为{diff:.4f}）"
             has_large_diff = True
         
-        check_output += f" {dept2} 声称应收 {dept1}: {dept2_receivable} 而{dept1} 声称应付 {dept2}: {dept1_payable}"
+        check_output += f"\n  {dept2} 声称应收 {dept1}: {dept2_receivable} \n而{dept1} 声称应付 {dept2}: {dept1_payable}"
         
         # 存储输出
         group_data.append(check_output)
@@ -136,8 +136,11 @@ print("\n对账检查完成！")
 if dept_pairs_with_large_diff:
     print("\n经过对比，发现下面的对账数据的差异大于10000元：")
     for pair_key, entries in dept_pairs_with_large_diff.items():
-        print(pair_key)
-        for entry in entries:
+        print(f"\n{pair_key}")
+        for i, entry in enumerate(entries):
             print(entry)
+            # 只在第一个条目后添加空行，最后一个条目后不添加
+            if i < len(entries) - 1:
+                print()
 else:
     print("\n没有发现差异大于10000的对账数据。")

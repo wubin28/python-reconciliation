@@ -134,13 +134,25 @@ for idx, dept_pair in enumerate(department_pairs, 1):
 # 打印最终结果
 print("\n对账检查完成！")
 if dept_pairs_with_large_diff:
-    print("\n经过对比，发现下面的对账数据的差异大于10000元：")
+    pairs_count = len(dept_pairs_with_large_diff)
+    print(f"\n经过对比，发现下面的{pairs_count}个部门对，其两组对账数据中，至少有一组的差异大于10000元：")
+    
+    # 添加计数器用于差异过万部门对的编号
+    large_diff_counter = 1
+    
     for pair_key, entries in dept_pairs_with_large_diff.items():
-        print(f"\n{pair_key}")
+        print(f"\n[差异过万-部门对-编号：{large_diff_counter}/{pairs_count}]")
+        print(f"{pair_key}")
         for i, entry in enumerate(entries):
             print(entry)
             # 只在第一个条目后添加空行，最后一个条目后不添加
             if i < len(entries) - 1:
                 print()
+        
+        # 在每个部门对后添加分隔线（最后一个除外）
+        if large_diff_counter < pairs_count:
+            print("\n---")
+        
+        large_diff_counter += 1
 else:
     print("\n没有发现差异大于10000的对账数据。")
